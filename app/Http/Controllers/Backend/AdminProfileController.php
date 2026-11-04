@@ -28,4 +28,30 @@ class AdminProfileController extends Controller
 
         return redirect()->route('admin.profile.edit')->with('success', 'Profile updated successfully.');
     }
+
+    public function editPassword()
+    {
+        return view('admin.profile.edit-password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $admin = Auth::guard('admin')->user();
+
+        $validated = $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (! \Hash::check($validated['current_password'], $admin->password)) {
+            return back()->withErrors(['current_password' => 'Does not match current password.'])
+                ->with('error', 'Does not match current password.');
+        }
+
+        $admin->update([
+            'password' => \Hash::make($validated['new_password']),
+        ]);
+
+        return redirect()->route('admin.password.edit')->with('success', 'Password updated successfully.');
+    }
 }

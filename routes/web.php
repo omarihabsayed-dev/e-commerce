@@ -46,5 +46,13 @@ Route::controller(AdminProfileController::class)
         Route::patch('/', 'update')->name('update');
         Route::delete('/', 'destroy')->name('destroy');
     });
+Route::controller(AdminProfileController::class)
+    ->prefix('admin/password')
+    ->name('admin.password.')
+    ->middleware('admin.active')
+    ->group(function (): void {
+        Route::get('/', 'editPassword')->name('edit');
+        Route::patch('/', 'updatePassword')->name('update');
+    });
 
 require __DIR__.'/auth.php';
