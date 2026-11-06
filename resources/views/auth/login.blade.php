@@ -1,48 +1,124 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('frontend.main')
+@section('content')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<div class="breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-inner">
+            <ul class="list-inline list-unstyled">
+                <li><a href="home.html">Home</a></li>
+                <li class='active'>Login</li>
+            </ul>
+        </div><!-- /.breadcrumb-inner -->
+    </div><!-- /.container -->
+</div><!-- /.breadcrumb -->
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
-                autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+<div class="body-content">
+    <div class="container">
+        <div class="sign-in-page">
+            <div class="row">
+                <!-- Sign-in -->
+                <div class="col-md-6 col-sm-6 sign-in">
+                    <h4 class="">Sign in</h4>
+                    <p class="">Hello, Welcome to your account.</p>
+                    <div class="social-sign-in outer-top-xs">
+                        <a href="#" class="facebook-sign-in"><i class="fa fa-facebook"></i> Sign In with Facebook</a>
+                        <a href="#" class="twitter-sign-in"><i class="fa fa-twitter"></i> Sign In with Twitter</a>
+                    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+                    <form method="POST" action="{{ route('login') }}" class="register-form outer-top-xs" role="form">
+                        @csrf
 
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                autocomplete="current-password" />
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label class="info-title" for="email">Email Address <span>*</span></label>
+                            <input type="email"
+                                class="form-control unicase-form-control text-input @error('email') is-invalid @enderror"
+                                id="email" name="email" value="{{ old('email') }}" required autofocus>
+                            @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+                        <div class="form-group">
+                            <label class="info-title" for="password">Password <span>*</span></label>
+                            <input type="password"
+                                class="form-control unicase-form-control text-input @error('password') is-invalid @enderror"
+                                id="password" name="password" required>
+                            @error('password')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox"
-                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+                        <div class="form-group d-flex justify-content-between align-items-center mb-3">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="remember" id="remember_me" value="1" {{ old('remember')
+                                        ? 'checked' : '' }}>
+                                    Remember me
+                                </label>
+                            </div>
+                            @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}" class="forgot-password">Forgot your Password?</a>
+                            @endif
+                        </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                href="{{ route('password.request') }}">
-                {{ __('Forgot your password?') }}
-            </a>
-            @endif
+                        <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Login</button>
+                    </form>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                </div>
+                <!-- Sign-in -->
+
+                <!-- create a new account -->
+                <div class="col-md-6 col-sm-6 create-new-account">
+                    <h4 class="checkout-subtitle">Create a new account</h4>
+                    <p class="text title-tag-line">Create your new account.</p>
+                    <form method="POST" action="{{ route('register') }}" class="register-form outer-top-xs" role="form">
+                        @csrf
+                        <div class="form-group">
+                            <label class="info-title" for="name">Name <span>*</span></label>
+                            <input type="text" class="form-control unicase-form-control text-input" id="name"
+                                name="name" value="{{ old('name') }}" required>
+                            @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label class="info-title" for="email">Email Address <span>*</span></label>
+                            <input type="email" class="form-control unicase-form-control text-input" id="email"
+                                name="email" value="{{ old('email') }}" required autofocus>
+                            @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label class="info-title" for="password">Password <span>*</span></label>
+                            <input type="password" class="form-control unicase-form-control text-input" id="password"
+                                name="password" required>
+                            @error('password')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label class="info-title" for="password_confirmation">Confirm Password
+                                <span>*</span></label>
+                            <input type="password" class="form-control unicase-form-control text-input"
+                                id="password_confirmation" name="password_confirmation" required>
+                            @error('password_confirmation')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Sign Up</button>
+                    </form>
+
+
+                </div>
+                <!-- create a new account -->
+            </div><!-- /.row -->
+        </div><!-- /.sigin-in-->
+        <!-- ============================================== BRANDS CAROUSEL ============================================== -->
+        @include('frontend.partials.brands')
+        <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->
+    </div><!-- /.container -->
+</div><!-- /.body-content -->
+
+@endsection

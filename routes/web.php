@@ -2,12 +2,9 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\AdminProfileController;
+use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -54,5 +51,8 @@ Route::controller(AdminProfileController::class)
         Route::get('/', 'editPassword')->name('edit');
         Route::patch('/', 'updatePassword')->name('update');
     });
+Route::controller(IndexController::class)->group(function (): void {
+    Route::get('/', 'index')->name('index');
+});
 
 require __DIR__.'/auth.php';
