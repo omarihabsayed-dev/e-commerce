@@ -1,17 +1,34 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('frontend.main')
+@section('content')
+<div class="body-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+                <div style="margin-bottom: 6px;">
+                    <a href="{{ route('profile.edit') }}" class="btn btn-primary btn-sm btn-block">Profile Update</a>
+                </div>
+
+                <div style="margin-bottom: 6px;">
+                    <a href="{{ route('profile.edit') }}#updatePassword" class="btn btn-primary btn-sm btn-block">Change
+                        Password</a>
+                </div>
+
+                <div style="margin-bottom: 6px;">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm btn-block">Logout</button>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-md-6 mt-3">
+                <div class="card">
+                    <h3 class="text-center"><span class="text-danger">Hi... </span><strong>{{ Auth::user()->name
+                            }}</strong> Welcome to Easy Online Shop</h3>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection
