@@ -1,11 +1,27 @@
 @extends('admin.main')
 @section('content')
 <div class="container-full">
-
+    <div class="content-header">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="page-title">Password</h3>
+                <div class="d-inline-block align-items-center">
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"><i
+                                        class="mdi mdi-home-outline"></i></a></li>
+                            <li class="breadcrumb-item" aria-current="page">Password</li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit Password</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Main content -->
     <section class="content">
-        <div class="row">
-            <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-6">
                 <div class="box">
                     <div class="box-header with-border">
                         <h4 class="box-title">Edit Password</h4>

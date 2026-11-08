@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\AdminProfileController;
+use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,19 @@ Route::controller(AdminController::class)
             Route::get('/dashboard', 'dashboard')->name('index');
             Route::post('/logout', 'destroy')->name('destroy');
         });
+    });
+
+Route::controller(BrandController::class)
+    ->prefix('admin/brands')
+    ->name('admin.brands.')
+    ->middleware('admin.active')
+    ->group(function (): void {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{brand}/edit', 'edit')->name('edit');
+        Route::patch('/{brand}', 'update')->name('update');
+        Route::delete('/{brand}', 'destroy')->name('destroy');
+        Route::post('/', 'store')->name('store');
+
     });
 
 Route::controller(AdminProfileController::class)

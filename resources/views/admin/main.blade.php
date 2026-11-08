@@ -108,6 +108,31 @@
         @endif
     </script>
 
+    <script src="{{ asset('assets/vendor_components/datatable/datatables.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.delete-btn').on('click', function (e) {
+                e.preventDefault();
+                var form = $(this).closest('.delete-form');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form[0].submit();
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
