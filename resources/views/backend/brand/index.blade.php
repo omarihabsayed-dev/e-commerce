@@ -12,7 +12,7 @@
                             <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"><i
                                         class="mdi mdi-home-outline"></i></a></li>
                             <li class="breadcrumb-item" aria-current="page">Brands</li>
-                            <li class="breadcrumb-item active" aria-current="page">Brand Names</li>
+                            <li class="breadcrumb-item active" aria-current="page">Brand List</li>
                         </ol>
                     </nav>
                 </div>

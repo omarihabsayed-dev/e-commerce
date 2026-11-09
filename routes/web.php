@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\AdminProfileController;
 use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +47,30 @@ Route::controller(BrandController::class)
         Route::patch('/{brand}', 'update')->name('update');
         Route::delete('/{brand}', 'destroy')->name('destroy');
         Route::post('/', 'store')->name('store');
+    });
 
+Route::controller(CategoryController::class)
+    ->prefix('admin/categories')
+    ->name('admin.categories.')
+    ->middleware('admin.active')
+    ->group(function (): void {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{category}/edit', 'edit')->name('edit');
+        Route::patch('/{category}', 'update')->name('update');
+        Route::delete('/{category}', 'destroy')->name('destroy');
+        Route::post('/', 'store')->name('store');
+    });
+
+Route::controller(SubCategoryController::class)
+    ->prefix('admin/subcategories')
+    ->name('admin.subcategories.')
+    ->middleware('admin.active')
+    ->group(function (): void {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{subcategory}/edit', 'edit')->name('edit');
+        Route::patch('/{subcategory}', 'update')->name('update');
+        Route::delete('/{subcategory}', 'destroy')->name('destroy');
+        Route::post('/', 'store')->name('store');
     });
 
 Route::controller(AdminProfileController::class)

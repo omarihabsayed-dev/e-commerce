@@ -6,12 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-    protected $fillable = [
-        'name',
-        'slug',
-        'image',
-    ];
-
     protected static function boot()
     {
         parent::boot();
