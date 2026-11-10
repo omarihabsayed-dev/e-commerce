@@ -15,13 +15,11 @@
                 class="form-control @error('password', 'userDeletion') is-invalid @enderror"
                 placeholder="Enter your password to confirm">
             @error('password', 'userDeletion')
-            <div class="invalid-feedback" style="display: block; color: #dc3545; font-weight: normal; margin-top: 5px;">
-                {{ $message }}
-            </div>
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
             @enderror
         </div>
 
-        <button type="submit" class="btn btn-danger" style="box-shadow: none; outline: none;">
+        <button type="submit" class="btn btn-danger">
             Delete Account
         </button>
     </form>

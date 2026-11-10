@@ -5,7 +5,6 @@
         <div class="user-profile">
             <div class="ulogo">
                 <a href="{{ route('admin.index') }}">
-                    <!-- logo for regular state and mobile devices -->
                     <div class="d-flex align-items-center justify-content-center">
                         <img src="{{ asset('backend/images/logo-dark.png') }}" alt="">
                         <h3>Admin</h3>
@@ -50,6 +49,10 @@
                             href="{{ route('admin.categories.index') }}"><i class="ti-more"></i>Category List</a></li>
                     <li class="{{ request()->routeIs('admin.subcategories*') ? 'active' : '' }}"><a
                             href="{{ route('admin.subcategories.index') }}"><i class="ti-more"></i>SubCategory List</a>
+                    </li>
+                    <li class="{{ request()->routeIs('admin.subsubcategories*') ? 'active' : '' }}"><a
+                            href="{{ route('admin.subsubcategories.index') }}"><i class="ti-more"></i>SubSubCategory
+                            List</a>
                     </li>
                 </ul>
             </li>

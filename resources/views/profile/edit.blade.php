@@ -2,29 +2,36 @@
 
 @section('content')
 <div class="body-content">
-    <div class="container">
+    <div class="container mt-4">
         <div class="row">
-            <div class="col-md-2">
-                <div style="margin-bottom: 6px;">
-                    <a href="{{ route('profile.edit') }}" class="btn btn-primary btn-sm btn-block">Profile Update</a>
-                </div>
+            {{-- Sidebar --}}
+            <div class="col-md-3 col-lg-2 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body p-2">
+                        <a href="{{ route('profile.edit') }}"
+                            class="btn btn-primary btn-sm btn-block mb-2 {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                            Profile Update
+                        </a>
 
-                <div style="margin-bottom: 6px;">
-                    <a href="{{ route('profile.edit') }}#updatePassword" class="btn btn-primary btn-sm btn-block">Change
-                        Password</a>
-                </div>
+                        <a href="{{ route('profile.edit') }}#updatePassword"
+                            class="btn btn-outline-primary btn-sm btn-block mb-2">
+                            Change Password
+                        </a>
 
-                <div style="margin-bottom: 6px;">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm btn-block">Logout</button>
-                    </form>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-danger btn-sm btn-block">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-10 mt-3">
-                <div class="card mb-4">
-                    <div class="card-header">
+            {{-- Main Content --}}
+            <div class="col-md-9 col-lg-10">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
                         <h5 class="mb-0">Profile Information</h5>
                         <small class="text-muted">Update your account's profile information and email address.</small>
                     </div>
@@ -33,8 +40,8 @@
                     </div>
                 </div>
 
-                <div class="card mb-4" id="updatePassword">
-                    <div class="card-header">
+                <div class="card shadow-sm mb-4" id="updatePassword">
+                    <div class="card-header bg-white">
                         <h5 class="mb-0">Update Password</h5>
                         <small class="text-muted">Ensure your account is using a long, random password to stay
                             secure.</small>
@@ -44,8 +51,8 @@
                     </div>
                 </div>
 
-                <div class="card mb-4">
-                    <div class="card-header">
+                <div class="card shadow-sm mb-4 border-danger">
+                    <div class="card-header bg-white">
                         <h5 class="mb-0 text-danger">Delete Account</h5>
                         <small class="text-muted">Once your account is deleted, all of its resources and data will be
                             permanently deleted.</small>

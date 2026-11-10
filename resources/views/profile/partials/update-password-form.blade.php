@@ -9,9 +9,7 @@
                 class="form-control @error('current_password', 'updatePassword') is-invalid @enderror"
                 autocomplete="current-password">
             @error('current_password', 'updatePassword')
-            <div class="invalid-feedback" style="display: block; color: #dc3545; font-weight: normal; margin-top: 5px;">
-                {{ $message }}
-            </div>
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
             @enderror
         </div>
 
@@ -21,9 +19,7 @@
                 class="form-control @error('password', 'updatePassword') is-invalid @enderror"
                 autocomplete="new-password">
             @error('password', 'updatePassword')
-            <div class="invalid-feedback" style="display: block; color: #dc3545; font-weight: normal; margin-top: 5px;">
-                {{ $message }}
-            </div>
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
             @enderror
         </div>
 
@@ -33,17 +29,17 @@
                 class="form-control @error('password_confirmation', 'updatePassword') is-invalid @enderror"
                 autocomplete="new-password">
             @error('password_confirmation', 'updatePassword')
-            <div class="invalid-feedback" style="display: block; color: #dc3545; font-weight: normal; margin-top: 5px;">
-                {{ $message }}
-            </div>
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
             @enderror
         </div>
 
         <div class="d-flex align-items-center mt-4">
-            <button type="submit" class="btn btn-primary px-4" style="box-shadow: none; outline: none;">Save</button>
+            <button type="submit" class="btn btn-primary px-4">Save</button>
 
             @if (session('status') === 'password-updated')
-            <span class="text-success ml-3" style="margin-left: 10px;">Saved.</span>
+            <div class="alert alert-success py-1 px-3 mb-0 ml-3" style="font-size: 14px;">
+                Password updated successfully.
+            </div>
             @endif
         </div>
     </form>
