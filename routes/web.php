@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\AdminProfileController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\SubSubCategoryController;
 use App\Http\Controllers\Frontend\IndexController;
@@ -84,6 +85,19 @@ Route::controller(SubSubCategoryController::class)
         Route::patch('/{subsubcategory}', 'update')->name('update');
         Route::delete('/{subsubcategory}', 'destroy')->name('destroy');
         Route::post('/', 'store')->name('store');
+    });
+
+    Route::controller(ProductController::class)
+    ->prefix('admin/products')
+    ->name('admin.products.')
+    ->middleware('admin.active')
+    ->group(function (): void {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{product}/edit', 'edit')->name('edit');
+        Route::patch('/{product}', 'update')->name('update');
+        Route::delete('/{product}', 'destroy')->name('destroy');
     });
 
 Route::controller(AdminProfileController::class)
