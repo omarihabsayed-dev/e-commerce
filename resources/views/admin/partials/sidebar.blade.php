@@ -66,8 +66,10 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ request()->routeIs('admin.products*') ? 'active' : '' }}"><a href="{{ route('admin.products.index') }}"><i class="ti-more"></i>Add Product</a></li>
-                    <li class="{{ request()->routeIs('admin.products*') ? 'active' : '' }}"><a href="{{ route('admin.products.edit') }}"><i class="ti-more"></i>Manage Products</a></li>
+                    <li class="{{ request()->routeIs('admin.products*') ? 'active' : '' }}"><a
+                            href="{{ route('admin.products.create') }}"><i class="ti-more"></i>Add Product</a></li>
+                    <li class=""><a href=""><i class="ti-more"></i>Manage Products</a>
+                    </li>
                 </ul>
             </li>
 
