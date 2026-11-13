@@ -69,7 +69,7 @@
                                         </td>
 
                                         <td>
-                                            @if($product->discount_price)
+                                            @if($product->discount_price && $product->discount_price > 0)
                                             <span class="text-danger font-weight-bold">${{
                                                 number_format($product->discount_price, 2) }}</span><br>
                                             <del class="text-muted" style="font-size: 12px;">${{
@@ -90,30 +90,52 @@
                                         </td>
 
                                         <td>
-                                            @if($product->status)
-                                            <span class="badge badge-success">Active</span>
-                                            @else
-                                            <span class="badge badge-secondary">Inactive</span>
-                                            @endif
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                @if($product->status)
+                                                <span class="badge badge-success">Active</span>
+                                                @else
+                                                <span class="badge badge-secondary">Inactive</span>
+                                                @endif
 
-                                            @if($product->featured)
-                                            <span class="badge badge-warning">Featured</span>
-                                            @endif
+                                                @if($product->featured)
+                                                <span class="badge badge-warning shadow-sm ml-1">Featured</span>
+                                                @endif
+                                            </div>
                                         </td>
 
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-center">
+                                        <td style="white-space: nowrap;">
+                                            <div
+                                                style="display:flex; flex-direction:row; flex-wrap:nowrap; align-items:center; justify-content:center; gap:8px;">
+
+                                                <form action="{{ route('admin.products.toggle-status', $product->id) }}"
+                                                    method="POST" style="margin:0; display:inline-flex;">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit"
+                                                        class="btn btn-sm {{ $product->status ? 'btn-success' : 'btn-secondary' }}"
+                                                        style="width:35px; height:35px; padding:0; display:inline-flex; align-items:center; justify-content:center;"
+                                                        title="{{ $product->status ? 'Deactivate' : 'Activate' }}">
+                                                        <i class="fa fa-power-off" style="font-size:14px;"></i>
+                                                    </button>
+                                                </form>
+
                                                 <a href="{{ route('admin.products.edit', $product->id) }}"
-                                                    class="btn btn-primary mr-2">
+                                                    class="btn btn-primary"
+                                                    style="height:35px; display:inline-flex; align-items:center; padding:0 15px; font-size:14px;">
                                                     <i class="fa fa-pencil mr-1"></i> Edit
                                                 </a>
-                                                <form action="" method="POST" class="m-0 delete-form">
+
+                                                <form action="{{ route('admin.products.destroy', $product->id) }}"
+                                                    method="POST" class="delete-form"
+                                                    style="margin:0; display:inline-flex;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-danger delete-btn">
+                                                    <button type="button" class="btn btn-danger delete-btn"
+                                                        style="height:35px; display:inline-flex; align-items:center; padding:0 15px; font-size:14px;">
                                                         <i class="fa fa-trash mr-1"></i> Delete
                                                     </button>
                                                 </form>
+
                                             </div>
                                         </td>
                                     </tr>

@@ -111,4 +111,33 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
+
+    public function toggleStatus(Product $product)
+    {
+        $product->status = ! $product->status;
+        $product->save();
+        $message = $product->status ? 'Product activated successfully.' : 'Product deactivated successfully';
+
+        return redirect()->back()->with('success', $message);
+
+    }
+
+    public function destroy(Product $product)
+    {
+        if ($product->thumbnail && Storage::disk('public')->exists($product->thumbnail)) {
+            Storage::disk('public')->delete($product->thumbnail);
+        }
+
+        foreach ($product->images as $image) {
+            if (Storage::disk('public')->exists($image->image_path)) {
+                Storage::disk('public')->delete($image->image_path);
+            }
+            $image->delete();
+        }
+
+        $product->delete();
+
+        return redirect()->back()->with('success', 'Product deleted successfully.');
+
+    }
 }

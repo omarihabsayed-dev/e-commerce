@@ -149,8 +149,9 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <h5>Discount Price</h5>
-                                <input type="number" step="0.01" name="discount_price" class="form-control"
-                                    value="{{ old('discount_price', $product->discount_price) }}">
+                                <input type="number" step="0.01" name="discount_price" id="discount_price"
+                                    class="form-control"
+                                    value="{{ old('discount_price', $product->discount_price ?? '') }}">
                                 @error('discount_price')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -318,6 +319,15 @@
                 loadSubSubCategories(selectedSubCategory, null);
             }
         });
+
+        const discountInput = document.getElementById('discount_price');
+        if (discountInput) {
+            discountInput.addEventListener('focus', function () {
+                if (this.value == 0 || this.value == '0.00') {
+                    this.value = '';
+                }
+            });
+        }
     });
 </script>
 @endsection

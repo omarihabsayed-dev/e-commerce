@@ -97,7 +97,8 @@ Route::controller(ProductController::class)
         Route::post('/', 'store')->name('store');
         Route::get('/{product}/edit', 'edit')->name('edit');
         Route::patch('/{product}', 'update')->name('update');
-        // Route::delete('/{product}', 'destroy')->name('destroy');
+        Route::patch('/{product}/toggle-status', 'toggleStatus')->name('toggle-status');
+        Route::delete('/{product}', 'destroy')->name('destroy');
     });
 
 Route::controller(AdminProfileController::class)
