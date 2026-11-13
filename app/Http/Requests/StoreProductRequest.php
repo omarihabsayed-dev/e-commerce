@@ -44,7 +44,6 @@ class StoreProductRequest extends FormRequest
             'featured' => 'nullable|boolean',
             'special_offer' => 'nullable|boolean',
             'special_deal' => 'nullable|boolean',
-
             'status' => 'nullable|boolean',
         ];
     }

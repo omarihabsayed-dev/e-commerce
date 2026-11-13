@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\SubCategory;
 use App\Models\SubSubCategory;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -35,7 +37,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('thumbnail')) {
             $path = $request->file('thumbnail')->store('products/thumbnail', 'public');
-            $data['thumbnail'] = $path; // Overwrite the temp path with the real path
+            $data['thumbnail'] = $path;
         }
 
         $data['hot_deals'] = $request->boolean('hot_deals');
@@ -58,5 +60,55 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
+    }
+
+    public function edit(Product $product)
+    {
+        $brands = Brand::orderBy('name', 'asc')->get();
+        $categories = Category::orderBy('name', 'asc')->get();
+        $subcategories = SubCategory::with('category')->orderBy('name', 'asc')->get();
+        $subsubcategories = SubSubCategory::with('subCategory.category')->orderBy('name', 'asc')->get();
+
+        return view('backend.product.edit', compact('product', 'brands', 'categories', 'subcategories', 'subsubcategories'));
+    }
+
+    public function update(UpdateProductRequest $request, Product $product)
+    {
+        $data = $request->validated();
+        if ($request->hasFile('thumbnail')) {
+            if ($product->thumbnail && Storage::disk('public')->exists($product->thumbnail)) {
+                Storage::disk('public')->delete($product->thumbnail);
+            }
+            $path = $request->file('thumbnail')->store('products/thumbnail', 'public');
+            $data['thumbnail'] = $path;
+        }
+
+        $data['hot_deals'] = $request->boolean('hot_deals');
+        $data['featured'] = $request->boolean('featured');
+        $data['special_offer'] = $request->boolean('special_offer');
+        $data['special_deal'] = $request->boolean('special_deal');
+        $data['status'] = $request->boolean('status');
+
+        unset($data['multi_images']);
+
+        $product->update($data);
+
+        if ($request->hasFile('multi_images')) {
+            foreach ($product->images as $oldImage) {
+                if (Storage::disk('public')->exists($oldImage->image_path)) {
+                    Storage::disk('public')->delete($oldImage->image_path);
+                }
+                $oldImage->delete();
+            }
+
+            foreach ($request->file('multi_images') as $file) {
+                $path = $file->store('products/gallery', 'public');
+                $product->images()->create([
+                    'image_path' => $path,
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
 }

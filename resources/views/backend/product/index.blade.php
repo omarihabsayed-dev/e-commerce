@@ -103,7 +103,8 @@
 
                                         <td>
                                             <div class="d-flex align-items-center justify-content-center">
-                                                <a href="" class="btn btn-primary mr-2">
+                                                <a href="{{ route('admin.products.edit', $product->id) }}"
+                                                    class="btn btn-primary mr-2">
                                                     <i class="fa fa-pencil mr-1"></i> Edit
                                                 </a>
                                                 <form action="" method="POST" class="m-0 delete-form">
