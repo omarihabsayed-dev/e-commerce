@@ -92,9 +92,9 @@ Route::controller(ProductController::class)
     ->name('admin.products.')
     ->middleware('admin.active')
     ->group(function (): void {
-        // Route::get('/', 'index')->name('index');
+        Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
-        // Route::post('/', 'store')->name('store');
+        Route::post('/', 'store')->name('store');
         // Route::get('/{product}/edit', 'edit')->name('edit');
         // Route::patch('/{product}', 'update')->name('update');
         // Route::delete('/{product}', 'destroy')->name('destroy');

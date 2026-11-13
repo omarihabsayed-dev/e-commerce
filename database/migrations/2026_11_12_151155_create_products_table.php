@@ -20,11 +20,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('product_code')->unique();
-            $table->string('product_size')->nullable(); 
+            $table->string('product_size')->nullable();
             $table->string('product_color')->nullable();
             $table->integer('stock_quantity')->default(0);
             $table->string('tags')->nullable();
-            $table->decimal('price', 10, 2); 
+            $table->decimal('price', 10, 2);
             $table->decimal('discount_price', 10, 2)->nullable();
             $table->text('short_description');
             $table->longText('long_description');

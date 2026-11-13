@@ -18,4 +18,9 @@ class Brand extends Model
             $brand->slug = \Str::slug($brand->name);
         });
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

@@ -11,7 +11,6 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"><i
                                         class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item" aria-current="page">SubCategories</li>
                             <li class="breadcrumb-item active" aria-current="page">SubCategory List</li>
                         </ol>
                     </nav>
@@ -73,6 +72,11 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                            @if($subcategories->hasPages())
+                            <div class="box-footer">
+                                {{ $subcategories->links() }}
+                            </div>
+                            @endif
                         </div>
                     </div>
                     <!-- /.box-body -->

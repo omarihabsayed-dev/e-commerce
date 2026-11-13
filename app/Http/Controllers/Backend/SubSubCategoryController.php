@@ -14,7 +14,7 @@ class SubSubCategoryController extends Controller
     {
         $categories = Category::orderBy('name', 'asc')->get();
         $subcategories = SubCategory::with('category')->orderBy('name', 'asc')->get();
-        $subsubcategories = SubSubCategory::with('subCategory.category')->orderBy('name', 'asc')->get();
+        $subsubcategories = SubSubCategory::with('subCategory.category')->orderBy('name', 'asc')->paginate(10);
 
         return view('backend.subsubcategory.index', compact('subsubcategories', 'categories', 'subcategories'));
     }

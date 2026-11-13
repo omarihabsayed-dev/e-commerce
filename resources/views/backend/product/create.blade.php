@@ -8,7 +8,7 @@
             </div>
 
             <div class="box-body">
-                <form method="POST" action="" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row">
@@ -233,7 +233,6 @@
     </section>
 </div>
 
-<!-- Script for Dependent Dropdowns -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const categorySelect = document.getElementById('category_id');
@@ -242,13 +241,13 @@
 
         const allSubCategories = [
             @foreach($subcategories as $sub)
-                { id: "{{ $sub->id }}", name: "{{ $sub->name }}", category_id: "{{ $sub->category_id }}" },
+                { id: "{{ $sub->id }}", name: "{!! addslashes($sub->name) !!}", category_id: "{{ $sub->category_id }}" },
             @endforeach
         ];
 
         const allSubSubCategories = [
             @foreach($subsubcategories as $subsub)
-                { id: "{{ $subsub->id }}", name: "{{ $subsub->name }}", sub_category_id: "{{ $subsub->sub_category_id }}" },
+                { id: "{{ $subsub->id }}", name: "{!! addslashes($subsub->name) !!}", sub_category_id: "{{ $subsub->sub_category_id }}" },
             @endforeach
         ];
 
@@ -256,26 +255,31 @@
             const selectedCategory = this.value;
             subCategorySelect.innerHTML = '<option value="" disabled selected>Choose a subcategory</option>';
             subSubCategorySelect.innerHTML = '<option value="" disabled selected>Choose a subcategory first</option>';
+            subSubCategorySelect.disabled = true;
 
-            allSubCategories.forEach(sub => {
-                if (sub.category_id === selectedCategory) {
-                    const opt = document.createElement('option');
-                    opt.value = sub.id;
-                    opt.textContent = sub.name;
-                    subCategorySelect.appendChild(opt);
-                }
-            });
+            if (selectedCategory) {
+                subCategorySelect.disabled = false;
+                allSubCategories.forEach(sub => {
+                    if (String(sub.category_id) === String(selectedCategory)) {
+                        const opt = document.createElement('option');
+                        opt.value = sub.id;
+                        opt.innerHTML = sub.name;
+                        subCategorySelect.appendChild(opt);
+                    }
+                });
+            }
         });
 
         subCategorySelect.addEventListener('change', function () {
             const selectedSubCategory = this.value;
             subSubCategorySelect.innerHTML = '<option value="" disabled selected>Choose a sub-subcategory</option>';
+            subSubCategorySelect.disabled = false;
 
             allSubSubCategories.forEach(subsub => {
-                if (subsub.sub_category_id === selectedSubCategory) {
+                if (String(subsub.sub_category_id) === String(selectedSubCategory)) {
                     const opt = document.createElement('option');
                     opt.value = subsub.id;
-                    opt.textContent = subsub.name;
+                    opt.innerHTML = subsub.name; // Use innerHTML here
                     subSubCategorySelect.appendChild(opt);
                 }
             });
