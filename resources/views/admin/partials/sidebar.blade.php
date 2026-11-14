@@ -75,6 +75,20 @@
                 </ul>
             </li>
 
+            <li class="treeview {{ request()->routeIs('admin.slider*') ? 'active' : '' }}">
+                <a href="#">
+                    <i data-feather="file"></i>
+                    <span>Slider</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ request()->routeIs('admin.sliders.index') ? 'active' : '' }}"><a
+                            href="{{ route('admin.sliders.index') }}"><i class="ti-more"></i>Manage Slider</a></li>
+                </ul>
+            </li>
+
             <li class="header nav-small-cap">User Interface</li>
 
             <li class="treeview">

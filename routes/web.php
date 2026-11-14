@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\AdminProfileController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\SubSubCategoryController;
 use App\Http\Controllers\Frontend\IndexController;
@@ -99,6 +100,20 @@ Route::controller(ProductController::class)
         Route::patch('/{product}', 'update')->name('update');
         Route::patch('/{product}/toggle-status', 'toggleStatus')->name('toggle-status');
         Route::delete('/{product}', 'destroy')->name('destroy');
+    });
+
+Route::controller(SliderController::class)
+    ->prefix('admin/sliders')
+    ->name('admin.sliders.')
+    ->middleware('admin.active')
+    ->group(function (): void {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{slider}/edit', 'edit')->name('edit');
+        Route::patch('/{slider}', 'update')->name('update');
+        Route::patch('/{slider}/toggle-status', 'toggleStatus')->name('toggle-status');
+        Route::delete('/{slider}', 'destroy')->name('destroy');
+
     });
 
 Route::controller(AdminProfileController::class)
