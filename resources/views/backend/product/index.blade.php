@@ -48,12 +48,8 @@
                                     @forelse($products as $product)
                                     <tr>
                                         <td>
-                                            @if($product->thumbnail)
-                                            <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="img"
-                                                width="60" class="rounded shadow-sm">
-                                            @else
-                                            <span class="text-muted">No Img</span>
-                                            @endif
+                                            <img src="{{ $product->thumbnail }}" alt="img" width="60"
+                                                class="rounded shadow-sm">
                                         </td>
 
                                         <td>
