@@ -1028,9 +1028,9 @@
                                             <div class="product">
                                                 <div class="product-image">
                                                     <div class="image">
-                                                        <a href="detail.html">
-                                                            <img src="{{ $product->thumbnail }}" alt="img"
-                                                                class="rounded shadow-sm">
+                                                        <a href="{{ route('frontend.product', $product->slug) }}"">
+                                                            <img src=" {{ $product->thumbnail }}" alt="img"
+                                                            class="rounded shadow-sm">
                                                         </a>
                                                     </div>
                                                     @if($product->created_at->diffInDays(now()) <= 7) <div
@@ -1040,9 +1040,14 @@
                                                 @endif
                                             </div>
                                             <div class="product-info text-left">
-                                                <h3 class="name"><a href="detail.html">{{ $product->name }}</a></h3>
+                                                <h3 class="name">
+                                                    <a href="{{ route('frontend.product', $product->slug) }}">{{
+                                                        $product->name }}</a>
+                                                </h3>
+
                                                 <div class="rating rateit-small"></div>
                                                 <div class="description"></div>
+
                                                 <div class="product-price">
                                                     @if($product->discount_price && $product->discount_price > 0)
                                                     @php
@@ -1051,13 +1056,12 @@
                                                     @endphp
                                                     <span class="badge badge-danger" style="margin-right: 5px;">-{{
                                                         $discountPercentage }}%</span>
-                                                    <span class="price"> ${{ number_format($product->discount_price,
-                                                        2) }} </span>
+                                                    <span class="price"> ${{ number_format($product->discount_price, 2)
+                                                        }} </span>
                                                     <span class="price-before-discount">${{
                                                         number_format($product->price, 2) }}</span>
                                                     @else
-                                                    <span class="price"> ${{ number_format($product->price, 2)
-                                                        }}</span>
+                                                    <span class="price"> ${{ number_format($product->price, 2) }}</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -1079,7 +1083,7 @@
                                         <div class="product">
                                             <div class="product-image">
                                                 <div class="image">
-                                                    <a href="detail.html">
+                                                    <a href="{{ route('frontend.product', $product->slug) }}">
                                                         <img src="{{ $product->thumbnail }}" alt="img" width="60"
                                                             class="rounded shadow-sm">
                                                     </a>

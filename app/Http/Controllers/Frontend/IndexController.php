@@ -23,4 +23,20 @@ class IndexController extends Controller
 
         return view('frontend.index', compact('navCategories', 'sliders', 'allProducts', 'categoryProducts'));
     }
+
+    public function productDetails($slug)
+    {
+        $product = Product::where('slug', $slug)
+            ->where('status', true)
+            ->with(['images', 'brand', 'category'])
+            ->firstOrFail();
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where('status', 'true')
+            ->take(4)
+            ->get();
+
+        return view('frontend.product.product_details', compact('product', 'relatedProducts'));
+
+    }
 }
