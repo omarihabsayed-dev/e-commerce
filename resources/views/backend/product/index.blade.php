@@ -32,113 +32,106 @@
 
                     <div class="box-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
+                            <table class="table no-border">
                                 <thead>
-                                    <tr>
-                                        <th width="5%">Image</th>
-                                        <th>Product Info</th>
-                                        <th>Category</th>
-                                        <th>Price</th>
-                                        <th>Stock</th>
-                                        <th>Status</th>
-                                        <th class="text-center" width="15%">Action</th>
+                                    <tr class="text-uppercase bg-lightest">
+                                        <th style="min-width: 250px"><span class="text-white">Product</span></th>
+                                        <th style="min-width: 100px"><span class="text-fade">Price</span></th>
+                                        <th style="min-width: 100px"><span class="text-fade">Stock</span></th>
+                                        <th style="min-width: 150px"><span class="text-fade">Category</span></th>
+                                        <th style="min-width: 130px"><span class="text-fade">Status</span></th>
+                                        <th style="min-width: 120px" class="text-right"><span
+                                                class="text-fade">Action</span></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($products as $product)
                                     <tr>
-                                        <td>
-                                            <img src="{{ $product->thumbnail }}" alt="img" width="60"
-                                                class="rounded shadow-sm">
-                                        </td>
+                                        <td class="pl-0 py-8">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 mr-20">
+                                                    <div class="bg-img h-50 w-50"
+                                                        style="background-image: url({{ strpos($product->thumbnail, 'http') === 0 ? $product->thumbnail : asset('storage/' . $product->thumbnail) }}); background-size: cover; border-radius: 5px;">
+                                                    </div>
+                                                </div>
 
-                                        <td>
-                                            <strong>{{ $product->name }}</strong><br>
-                                            <small class="text-muted">Code: {{ $product->product_code }}</small><br>
-                                            <small class="text-muted">Brand: {{ $product->brand->name ?? 'N/A'
-                                                }}</small>
+                                                <div>
+                                                    <a href="{{ route('admin.products.edit', $product->id) }}"
+                                                        class="text-white font-weight-600 hover-primary mb-1 font-size-16">
+                                                        {{ $product->name }}
+                                                    </a>
+                                                    <span class="text-fade d-block">
+                                                        Code: {{ $product->product_code }} | Brand: {{
+                                                        $product->brand->name ?? 'N/A' }}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </td>
-
-                                        <td>
-                                            <span class="badge badge-info">{{ $product->category->name ??
-                                                'Uncategorized' }}</span>
-                                        </td>
-
                                         <td>
                                             @if($product->discount_price && $product->discount_price > 0)
-                                            <span class="text-danger font-weight-bold">${{
-                                                number_format($product->discount_price, 2) }}</span><br>
-                                            <del class="text-muted" style="font-size: 12px;">${{
-                                                number_format($product->price, 2) }}</del>
+                                            <span class="text-danger font-weight-600 d-block font-size-16">
+                                                ${{ number_format($product->discount_price, 2) }}
+                                            </span>
+                                            <del class="text-fade d-block font-size-14">
+                                                ${{ number_format($product->price, 2) }}
+                                            </del>
                                             @else
-                                            <span class="text-success font-weight-bold">${{
-                                                number_format($product->price, 2) }}</span>
+                                            <span class="text-white font-weight-600 d-block font-size-16">
+                                                ${{ number_format($product->price, 2) }}
+                                            </span>
                                             @endif
                                         </td>
-
                                         <td>
                                             @if($product->stock_quantity > 0)
-                                            <span class="badge badge-primary">{{ $product->stock_quantity }} in
-                                                stock</span>
+                                            <span class="text-white font-weight-600 d-block font-size-16">
+                                                {{ $product->stock_quantity }}
+                                            </span>
                                             @else
-                                            <span class="badge badge-danger">Out of Stock</span>
+                                            <span class="text-danger font-weight-600 d-block font-size-16">
+                                                Out of Stock
+                                            </span>
                                             @endif
                                         </td>
-
                                         <td>
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                @if($product->status)
-                                                <span class="badge badge-success">Active</span>
-                                                @else
-                                                <span class="badge badge-secondary">Inactive</span>
-                                                @endif
-
-                                                @if($product->featured)
-                                                <span class="badge badge-warning shadow-sm ml-1">Featured</span>
-                                                @endif
-                                            </div>
+                                            <span class="text-fade font-weight-600 d-block font-size-16">
+                                                {{ $product->category->name ?? 'Uncategorized' }}
+                                            </span>
                                         </td>
+                                        <td>
+                                            <form action="{{ route('admin.products.toggle-status', $product->id) }}"
+                                                method="POST" class="m-0">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-link p-0 border-0"
+                                                    title="Click to toggle status">
+                                                    @if($product->status)
+                                                    <span class="badge badge-success-light badge-lg">Active</span>
+                                                    @else
+                                                    <span class="badge badge-danger-light badge-lg">Inactive</span>
+                                                    @endif
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td class="text-right">
+                                            <a href="{{ route('admin.products.edit', $product->id) }}"
+                                                class="waves-effect waves-light btn btn-info btn-circle mx-5">
+                                                <span class="mdi mdi-pencil"></span>
+                                            </a>
 
-                                        <td style="white-space: nowrap;">
-                                            <div
-                                                style="display:flex; flex-direction:row; flex-wrap:nowrap; align-items:center; justify-content:center; gap:8px;">
-
-                                                <form action="{{ route('admin.products.toggle-status', $product->id) }}"
-                                                    method="POST" style="margin:0; display:inline-flex;">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit"
-                                                        class="btn btn-sm {{ $product->status ? 'btn-success' : 'btn-secondary' }}"
-                                                        style="width:35px; height:35px; padding:0; display:inline-flex; align-items:center; justify-content:center;"
-                                                        title="{{ $product->status ? 'Deactivate' : 'Activate' }}">
-                                                        <i class="fa fa-power-off" style="font-size:14px;"></i>
-                                                    </button>
-                                                </form>
-
-                                                <a href="{{ route('admin.products.edit', $product->id) }}"
-                                                    class="btn btn-primary"
-                                                    style="height:35px; display:inline-flex; align-items:center; padding:0 15px; font-size:14px;">
-                                                    <i class="fa fa-pencil mr-1"></i> Edit
-                                                </a>
-
-                                                <form action="{{ route('admin.products.destroy', $product->id) }}"
-                                                    method="POST" class="delete-form"
-                                                    style="margin:0; display:inline-flex;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-danger delete-btn"
-                                                        style="height:35px; display:inline-flex; align-items:center; padding:0 15px; font-size:14px;">
-                                                        <i class="fa fa-trash mr-1"></i> Delete
-                                                    </button>
-                                                </form>
-
-                                            </div>
+                                            <form action="{{ route('admin.products.destroy', $product->id) }}"
+                                                method="POST" class="d-inline delete-form m-0">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="waves-effect waves-light btn btn-danger btn-circle mx-5 delete-btn">
+                                                    <span class="mdi mdi-delete"></span>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="7" class="text-center py-4 text-muted">No products found. Click
-                                            "Add New Product" to get started.</td>
+                                        <td colspan="6" class="text-center py-4 text-fade">No products found.</td>
                                     </tr>
                                     @endforelse
                                 </tbody>

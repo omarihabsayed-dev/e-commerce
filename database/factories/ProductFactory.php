@@ -41,7 +41,7 @@ class ProductFactory extends Factory
             'product_size' => $this->faker->randomElement(['S,M,L', 'One Size', '40,41,42']),
             'product_color' => $this->faker->randomElement(['Red,Blue', 'Black,White', 'Green']),
             'stock_quantity' => $this->faker->numberBetween(0, 50),
-            'tags' => $this->faker->words(3, true),
+            'tags' => implode(',', $this->faker->words(3)),
             'price' => $price,
             'discount_price' => $this->faker->boolean(30) ? $price * 0.8 : null,
             'short_description' => $this->faker->sentence(),

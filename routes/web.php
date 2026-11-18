@@ -136,5 +136,7 @@ Route::controller(AdminProfileController::class)
 Route::controller(IndexController::class)->group(function (): void {
     Route::get('/', 'index')->name('index');
     Route::get('/product/{slug}', 'productDetails')->name('frontend.product');
+    Route::get('/tag/{tag}', 'taggedProducts')->name('frontend.tag');
+
 });
 require __DIR__.'/auth.php';

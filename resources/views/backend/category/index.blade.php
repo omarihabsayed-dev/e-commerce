@@ -30,41 +30,51 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="table-responsive">
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table id="example1" class="table no-border">
                                 <thead>
-                                    <tr>
-                                        <th>Icon</th>
-                                        <th>Name</th>
-                                        <th class="text-center">Action</th>
+                                    <tr class="text-uppercase bg-lightest">
+                                        <th style="min-width: 80px"><span class="text-white">Icon</span></th>
+                                        <th style="min-width: 200px"><span class="text-white">Category Name</span></th>
+                                        <th class="text-right" style="min-width: 150px"><span
+                                                class="text-fade">Action</span></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($categories as $category)
                                     <tr>
-                                        <td>
-                                            <span><i class="{{ $category->icon }}"></i></span>
-                                        </td>
-                                        <td>{{ $category->name }}</td>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <a href="{{ route('admin.categories.edit', $category->id) }}"
-                                                    class="btn btn-primary mr-2">
-                                                    <i class="fa fa-pencil mr-1"></i> Edit
-                                                </a>
-                                                <form action="{{ route('admin.categories.destroy', $category->id) }}"
-                                                    method="POST" class="m-0 delete-form">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-danger delete-btn">
-                                                        <i class="fa fa-trash mr-1"></i> Delete
-                                                    </button>
-                                                </form>
+                                        <td class="pl-20 py-8">
+                                            <div class="d-flex align-items-center">
+                                                <span class="text-white font-size-24"><i
+                                                        class="{{ $category->icon }}"></i></span>
                                             </div>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.categories.edit', $category->id) }}"
+                                                class="text-white font-weight-600 hover-primary mb-1 font-size-16">
+                                                {{ $category->name }}
+                                            </a>
+                                            <span class="text-fade d-block">Slug: {{ $category->slug }}</span>
+                                        </td>
+                                        <td class="text-right">
+                                            <a href="{{ route('admin.categories.edit', $category->id) }}"
+                                                class="waves-effect waves-light btn btn-info btn-circle mx-5">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+
+                                            <form action="{{ route('admin.categories.destroy', $category->id) }}"
+                                                method="POST" class="d-inline delete-form m-0">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="waves-effect waves-light btn btn-danger btn-circle mx-5 delete-btn">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="3" class="text-center">No categories found.</td>
+                                        <td colspan="3" class="text-center py-4 text-fade">No categories found.</td>
                                     </tr>
                                     @endforelse
                                 </tbody>

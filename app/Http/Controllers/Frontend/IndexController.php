@@ -76,4 +76,16 @@ class IndexController extends Controller
         return view('frontend.product.product_details', compact('product', 'relatedProducts'));
 
     }
+
+    public function taggedProducts($tag)
+    {
+        $products = Product::where('status', true)
+            ->where('tags', 'LIKE', '%'.$tag.'%')
+            ->simplePaginate(9);
+        $navCategories = Category::with(['subCategories.subSubCategories'])
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return view('frontend.tag.index', compact('products', 'navCategories', 'tag'));
+    }
 }

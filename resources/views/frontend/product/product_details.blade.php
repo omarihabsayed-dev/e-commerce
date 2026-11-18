@@ -205,11 +205,35 @@
                                 <div id="tags" class="tab-pane">
                                     <div class="product-tag">
                                         <h4 class="title">Product Tags</h4>
-                                        <p>{{ $product->tags }}</p>
+                                        <div class="form-container">
+                                            <div class="form-group" style="display: flex; flex-wrap: wrap; gap: 10px;">
+
+                                                @if($product->tags)
+                                                @php
+                                                $tags = explode(',', $product->tags);
+                                                @endphp
+
+                                                @foreach($tags as $tag)
+                                                @php
+                                                $cleanTag = trim($tag);
+                                                @endphp
+                                                <a href="{{ route('frontend.tag', urlencode($cleanTag)) }}"
+                                                    class="btn btn-default btn-sm"
+                                                    style="background: #f4f4f4; border: 1px solid #ddd; border-radius: 20px; padding: 8px 15px; color: #555;">
+                                                    #{{ $cleanTag }}
+                                                </a>
+                                                @endforeach
+                                                @else
+                                                <span class="text-muted">No tags available for this product.</span>
+                                                @endif
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
