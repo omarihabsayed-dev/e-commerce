@@ -4,11 +4,31 @@
     <div class="container">
         <div class="breadcrumb-inner">
             <ul class="list-inline list-unstyled">
-                <li><a href="{{ route('index') }}">Home</a></li>
+                <li style="white-space: nowrap;"><a href="{{ route('index') }}">Home</a></li>
+
+                @if($product->category)
                 <li style="white-space: nowrap;">
-                    <a href="{{ url('/category/' . $product->category->slug) }}">{{ $product->category->name }}</a>
+                    <a href="{{ route('frontend.category', $product->category->slug) }}">{{ $product->category->name
+                        }}</a>
                 </li>
-                <li class='active'>{{ $product->name }}</li>
+                @endif
+
+                @if($product->subCategory)
+                <li style="white-space: nowrap;">
+                    <a href="{{ route('frontend.subcategory', $product->subCategory->slug) }}">{{
+                        $product->subCategory->name
+                        }}</a>
+                </li>
+                @endif
+
+                @if($product->subSubCategory)
+                <li style="white-space: nowrap;">
+                    <a href="{{ route('frontend.subsubcategory', $product->subSubCategory->slug) }}">{{
+                        $product->subSubCategory->name }}</a>
+                </li>
+                @endif
+
+                <li class='active' style="white-space: nowrap;">{{ $product->name }}</li>
             </ul>
         </div>
     </div>
@@ -167,12 +187,37 @@
 
                                 @if($product->product_color || $product->product_size)
                                 <div class="m-t-20">
-                                    @if($product->product_color)
-                                    <p><strong>Colors:</strong> {{ $product->product_color }}</p>
-                                    @endif
-                                    @if($product->product_size)
-                                    <p><strong>Sizes:</strong> {{ $product->product_size }}</p>
-                                    @endif
+                                    <div class="row">
+
+                                        @if($product->product_color)
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="info-title control-label">Color <span>*</span></label>
+                                                <select class="form-control unicase-form-control">
+                                                    <option selected>--Select Color--</option>
+                                                    @foreach(explode(',', $product->product_color) as $color)
+                                                    <option value="{{ trim($color) }}">{{ trim($color) }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                        @if($product->product_size)
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="info-title control-label">Size <span>*</span></label>
+                                                <select class="form-control unicase-form-control">
+                                                    <option selected>--Select Size--</option>
+                                                    @foreach(explode(',', $product->product_size) as $size)
+                                                    <option value="{{ trim($size) }}">{{ trim($size) }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                    </div>
                                 </div>
                                 @endif
                             </div>

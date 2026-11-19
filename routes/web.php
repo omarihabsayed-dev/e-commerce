@@ -137,6 +137,9 @@ Route::controller(IndexController::class)->group(function (): void {
     Route::get('/', 'index')->name('index');
     Route::get('/product/{slug}', 'productDetails')->name('frontend.product');
     Route::get('/tag/{tag}', 'taggedProducts')->name('frontend.tag');
+    Route::get('/category/{slug}', 'categoryProducts')->name('frontend.category');
+    Route::get('/subcategory/{slug}', 'subCategoryProducts')->name('frontend.subcategory');
+    Route::get('/subsubcategory/{slug}', 'subSubCategoryProducts')->name('frontend.subsubcategory');
 
 });
 require __DIR__.'/auth.php';

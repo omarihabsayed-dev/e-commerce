@@ -18,10 +18,12 @@ $navCategories = App\Models\Category::with(['subCategories.subSubCategories'])
                         <div class="row">
                             @foreach($category->subCategories as $sub)
                             <div class="col-sm-12 col-md-3">
-                                <h2 class="title">{{ $sub->name }}</h2>
+                                <a href="{{ route('frontend.subcategory', $sub->slug) }}">
+                                    <h2 class="title">{{ $sub->name }}</h2>
+                                </a>
                                 <ul class="links list-unstyled">
                                     @foreach($sub->subSubCategories as $subsub)
-                                    <li><a href="{{ url('/subsubcategory/' . $subsub->slug) }}">{{
+                                    <li><a href="{{ route('frontend.subsubcategory', $subsub->slug) }}">{{
                                             $subsub->name }}</a></li>
                                     @endforeach
                                 </ul>

@@ -7,6 +7,8 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Slider;
+use App\Models\SubCategory;
+use App\Models\SubSubCategory;
 
 class IndexController extends Controller
 {
@@ -87,5 +89,45 @@ class IndexController extends Controller
             ->get();
 
         return view('frontend.tag.index', compact('products', 'navCategories', 'tag'));
+    }
+
+    public function categoryProducts($slug)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $products = Product::where('category_id', $category->id)
+            ->where('status', 'true')
+            ->simplePaginate(9);
+        $navCategories = Category::with(['subCategories.subSubCategories'])
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return view('frontend.product.category_view', compact('category', 'products', 'navCategories'));
+    }
+
+    public function subCategoryProducts($slug)
+    {
+        $subcategory = SubCategory::where('slug', $slug)->firstOrFail();
+        $products = Product::where('sub_category_id', $subcategory->id)
+            ->where('status', 'true')
+            ->simplePaginate(9);
+        $navCategories = Category::with(['subCategories.subSubCategories'])
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return view('frontend.product.sub_category_view', compact('subcategory', 'products', 'navCategories'));
+    }
+
+    public function subSubCategoryProducts($slug)
+    {
+        $subsubcategory = SubSubCategory::where('slug', $slug)->firstOrFail();
+        $products = Product::where('sub_sub_category_id', $subsubcategory->id)
+            ->where('status', true)
+            ->simplePaginate(9);
+        $navCategories = Category::with(['subCategories.subSubCategories'])
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return view('frontend.product.sub_sub_category_view', compact('subsubcategory', 'products', 'navCategories'));
+
     }
 }

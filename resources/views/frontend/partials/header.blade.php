@@ -192,10 +192,13 @@
 
                                                     @foreach($category->subCategories as $sub)
                                                     <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
-                                                        <h2 class="title">{{ $sub->name }}</h2>
+                                                        <a href="{{ route('frontend.subcategory', $sub->slug) }}">
+                                                            <h2 class="title">{{ $sub->name }}</h2>
+                                                        </a>
                                                         <ul class="links">
                                                             @foreach($sub->subSubCategories as $subsub)
-                                                            <li><a href="{{ url('/subsubcategory/' . $subsub->slug) }}">{{
+                                                            <li><a
+                                                                    href="{{ route('frontend.subsubcategory', $subsub->slug) }}">{{
                                                                     $subsub->name }}</a></li>
                                                             @endforeach
                                                         </ul>
