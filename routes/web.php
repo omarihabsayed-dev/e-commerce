@@ -140,6 +140,6 @@ Route::controller(IndexController::class)->group(function (): void {
     Route::get('/category/{slug}', 'categoryProducts')->name('frontend.category');
     Route::get('/subcategory/{slug}', 'subCategoryProducts')->name('frontend.subcategory');
     Route::get('/subsubcategory/{slug}', 'subSubCategoryProducts')->name('frontend.subsubcategory');
-
+    Route::get('/product/view/modal/{id}', 'productViewModal')->name('frontend.product.modal');
 });
 require __DIR__.'/auth.php';

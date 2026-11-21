@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta name="keywords" content="MediaCenter, Template, eCommerce">
     <meta name="robots" content="all">
     <title>Flipmart premium HTML5 & CSS3 Template</title>
@@ -62,6 +64,128 @@
     <script src="{{ asset('frontend/assets/js/bootstrap-select.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/scripts.js') }}"></script>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document"
+            style="width: 800px !important; max-width: 95%; margin: 30px auto !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><strong id="name"></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card" style="width: 18rem;">
+
+                                <img src="" class="card-img-top" alt="" style="height: 200px; width: 200px;"
+                                    id="thumbnail">
+                                <div class="card-body">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="list-group">
+                                <li class="list-group-item">Product Price: <strong class="text-danger">$<span
+                                            id="pprice"></span></strong> <del id="oldPrice">$</del></li>
+                                <li class="list-group-item">Product Code: <strong id="code"></strong></li>
+                                <li class="list-group-item">Category: <strong id="category"></strong></li>
+                                <li class="list-group-item">Brand: <strong id="brand"></strong></li>
+                                <li class="list-group-item">Stock: <span class="badge badge-pill badge-success"
+                                        id="available"></span> <span class="badge badge-pill badge-success"
+                                        id="out"></span></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" id="colorArea">
+                                <label for="exampleFormControlSelect1">Choose Color</label>
+                                <select class="form-control" id="exampleFormControlSelect1" name="color">
+                                </select>
+                            </div>
+                            <div class="form-group" id="sizeArea">
+                                <label for="exampleFormControlSelect1">Choose Size</label>
+                                <select class="form-control" id="exampleFormControlSelect1" name="size">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Quantity</label>
+                                <input type="number" class="form-control" id="exampleFormControlInput1" value="1"
+                                    min="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        function productView(id) {
+            $.ajax({
+                type: 'GET',
+                url: '/product/view/modal/' + id,
+                dataType: 'JSON',
+                success: function (data) {
+                    $('#name').text(data.product.name);
+                    $('#code').text(data.product.product_code);
+                    $('#category').text(data.product.category.name);
+                    $('#brand').text(data.product.brand.name);
+                    $('#stock').text(data.product.stock_quantity);
+                    $('#thumbnail').attr('src', data.product.thumbnail);
+
+                    if (data.product.price && data.product.discount_price > 0) {
+                        $('#pprice').text(data.product.discount_price);
+                        $('#oldPrice').text(data.product.price).show();
+                    } else {
+                        $('#pprice').text(data.product.price);
+                        $('#oldPrice').text(data.product.discount_price).hide();
+
+                    }
+
+                    if (data.product.stock_quantity && data.product.stock_quantity > 0) {
+                        $('#available').text('Available').show();
+                        $('#out').text('Out of Stock').hide();
+
+                    } else {
+                        $('#out').text('Out of Stock').show();
+                        $('#available').text('Available').hide();
+                    }
+
+                    $('select[name="color"]').empty();
+                    $('select[name="color"]').append('<option value="" selected disabled>--Select Color--</option>');
+                    if (data.product.product_color) {
+                        let colors = data.product.product_color.split(',');
+                        $.each(colors, function (key, value) {
+                            $('select[name="color"]').append('<option value="' + value.trim() + '">' + value.trim() + '</option>');
+                        });
+                    } else {
+                        $('#colorArea').hide();
+
+                    }
+
+                    $('select[name="size"]').empty();
+                    $('select[name="size"]').append('<option value="" selected disabled>--Select Size--</option>');
+                    if (data.product.product_size) {
+                        let size = data.product.product_size.split(',');
+                        $.each(size, function (key, value) {
+                            $('select[name="size"]').append('<option value="' + value.trim() + '">' + value.trim() + '</option>');
+                        });
+                    } else {
+                        $('#sizeArea').hide();
+                    }
+                }
+            })
+        }
+    </script>
 </body>
 
 </html>

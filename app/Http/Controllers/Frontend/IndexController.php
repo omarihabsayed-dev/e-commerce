@@ -130,4 +130,13 @@ class IndexController extends Controller
         return view('frontend.product.sub_sub_category_view', compact('subsubcategory', 'products', 'navCategories'));
 
     }
+
+    public function productViewModal($id)
+    {
+        $product = Product::with(['category', 'brand', 'images'])->findOrFail($id);
+
+        return response()->json([
+            'product' => $product,
+        ]);
+    }
 }

@@ -410,7 +410,7 @@
             <section class="section featured-product wow fadeInUp">
                 <h3 class="section-title">Featured products</h3>
                 <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
-                    @foreach($featuredProducts->take(5) as $product)
+                    @foreach($featuredProducts->take(20) as $product)
                     <div class="item item-carousel">
                         <div class="products">
                             <div class="product">
@@ -449,8 +449,12 @@
                                 <div class="action">
                                     <ul class="list-unstyled">
                                         <li class="add-cart-button btn-group">
-                                            <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
+
+                                            <button class="btn btn-primary icon" data-toggle="modal"
+                                                data-target="#exampleModal" id="{{ $product->id }}"
+                                                onclick="productView(this.id)" type="button">
                                                 <i class="fa fa-shopping-cart"></i> </button>
+
                                             <button class="btn btn-primary cart-btn" type="button">Add to
                                                 cart</button>
                                         </li>
