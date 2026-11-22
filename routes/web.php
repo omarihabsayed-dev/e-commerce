@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\SubSubCategoryController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -142,4 +143,7 @@ Route::controller(IndexController::class)->group(function (): void {
     Route::get('/subsubcategory/{slug}', 'subSubCategoryProducts')->name('frontend.subsubcategory');
     Route::get('/product/view/modal/{id}', 'productViewModal')->name('frontend.product.modal');
 });
+
+Route::post('/cart/data/store/{id}', [CartController::class, 'store'])->name('cart.store');
+
 require __DIR__.'/auth.php';
