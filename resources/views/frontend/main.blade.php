@@ -12,6 +12,7 @@
     <meta name="keywords" content="MediaCenter, Template, eCommerce">
     <meta name="robots" content="all">
     <title>Flipmart premium HTML5 & CSS3 Template</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
@@ -25,6 +26,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/rateit.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap-select.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <!-- Icons/Glyphs -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/font-awesome.css') }}">
 
@@ -65,12 +67,13 @@
     <script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/scripts.js') }}"></script>
 
+
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document"
             style="width: 800px !important; max-width: 95%; margin: 30px auto !important;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><strong id="name"></strong></h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><strong id="product_name"></strong></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -136,7 +139,7 @@
                 url: '/product/view/modal/' + id,
                 dataType: 'JSON',
                 success: function (data) {
-                    $('#name').text(data.product.name);
+                    $('#product_name').text(data.product.name);
                     $('#code').text(data.product.product_code);
                     $('#category').text(data.product.category.name);
                     $('#brand').text(data.product.brand.name);
@@ -192,23 +195,139 @@
         }
 
         function addToCart() {
-            var product_name = $('#name').text();
+            var product_name = $('#product_name').text();
             var id = $('#productId').val();
             var color = $('#color option:selected').text();
             var size = $('#size option:selected').text();
             var quantity = $('#quantity').val();
+
             $.ajax({
                 type: 'POST',
                 dataType: 'JSON',
-                data: {
-                    color: color, size: size, quantity: quantity, product_name: product_name
-                },
                 url: '/cart/data/store/' + id,
+                data: {
+                    color: color,
+                    size: size,
+                    quantity: quantity,
+                    product_name: product_name,
+                },
                 success: function (data) {
                     $('#closeModal').click();
+
+                    var toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        draggable: true,
+                    });
+
+                    if (data.status === 'success') {
+                        miniCart();
+                        toast.fire({ icon: 'success', title: data.message });
+                    } else {
+                        toast.fire({ icon: 'error', title: data.error || data.message || 'Something went wrong' });
+                    }
+                },
+                error: function (xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Request failed',
+                        text: xhr.status + ' ' + xhr.statusText,
+                    });
+                }
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function miniCart() {
+            $.ajax({
+                type: 'GET',
+                url: '/product/mini/cart',
+                dataType: 'JSON',
+                success: function (response) {
+                    var miniCart = "";
+                    var fallbackImage = "{{ asset('frontend/assets/images/cart.jpg') }}";
+                    var storageUrl = "{{ asset('storage') }}";
+
+                    $.each(response.items, function (key, value) {
+                        var productUrl = value.slug ? '/product/' + value.slug : '#';
+                        var imageUrl = value.image
+                            ? (value.image.startsWith('http') ? value.image : storageUrl + '/' + value.image)
+                            : fallbackImage;
+                        var attributes = [value.color, value.size].filter(Boolean).join(' / ');
+
+                        miniCart += `
+                    <div class="cart-item product-summary" data-row-id="${value.rowId}">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="image"> 
+                                    <a href="${productUrl}"><img src="${imageUrl}" alt="${value.name}"></a>
+                                </div>
+                            </div>
+                            <div class="col-xs-7">
+                                <h3 class="name"><a href="${productUrl}">${value.name}</a></h3>
+                                <div class="price">${value.quantity} &times; $${Number(value.price).toFixed(2)}</div>
+                                ${attributes ? `<div class="cart-attributes">${attributes}</div>` : ''}
+                            </div>
+                            <div class="col-xs-1 action"> 
+                                <a href="#" class="remove-from-cart" data-row-id="${value.rowId}">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>`;
+                    });
+
+                    if (!miniCart) {
+                        miniCart = '<div class="text-center m-t-10 m-b-10">Your cart is empty.</div>';
+                    }
+
+                    $('#miniCart').html(miniCart);
+                    $('#cart-count').text(response.totalQuantity);
+                    $('#cart-total').text(Number(response.total).toFixed(2));
+                    $('#cart-subtotal').text('$' + Number(response.subTotal).toFixed(2));
+                },
+                error: function (xhr) {
+                    console.error('Mini cart request failed', xhr);
                 }
             })
         }
+
+        miniCart();
+
+        $(document).on('click', '.remove-from-cart', function (e) {
+            e.preventDefault();
+            var rowId = $(this).data('row-id');
+            var url = '/cart/remove/' + rowId;
+
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    miniCart();
+
+                    var toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                    toast.fire({ icon: 'success', title: response.message });
+                },
+                error: function (xhr) {
+                    console.error('Remove failed', xhr);
+                }
+            });
+        });
     </script>
 </body>
 

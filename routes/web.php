@@ -144,6 +144,10 @@ Route::controller(IndexController::class)->group(function (): void {
     Route::get('/product/view/modal/{id}', 'productViewModal')->name('frontend.product.modal');
 });
 
-Route::post('/cart/data/store/{id}', [CartController::class, 'store'])->name('cart.store');
+Route::controller(CartController::class)->group(function (): void {
+    Route::post('/cart/data/store/{id}', 'store')->name('cart.store');
+    Route::get('/product/mini/cart', 'miniCart')->name('cart.add');
+    Route::delete('/cart/remove/{rowId}', 'destroy')->name('cart.remove');
+});
 
 require __DIR__.'/auth.php';

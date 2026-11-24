@@ -89,7 +89,7 @@
 
                         <div class='col-sm-6 col-md-7 product-info-block'>
                             <div class="product-info">
-                                <h1 class="name">{{ $product->name }}</h1>
+                                <h1 class="name" id="product_name">{{ $product->name }}</h1>
 
                                 <div class="rating-reviews m-t-20">
                                     <div class="row">
@@ -174,12 +174,13 @@
                                                         <div class="arrow minus gradient"><span class="ir"><i
                                                                     class="icon fa fa-sort-desc"></i></span></div>
                                                     </div>
-                                                    <input type="text" value="1">
+                                                    <input type="text" id="quantity" value="1" min="1">
                                                 </div>
                                             </div>
                                         </div>
+                                        <input type="hidden" id="productId" value="{{ $product->id }}">
                                         <div class="col-sm-7">
-                                            <button type="button" class="btn btn-primary"><i
+                                            <button type="submit" onclick="addToCart()" class="btn btn-primary"><i
                                                     class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</button>
                                         </div>
                                     </div>
@@ -193,7 +194,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label class="info-title control-label">Color <span>*</span></label>
-                                                <select class="form-control unicase-form-control">
+                                                <select id="color" class="form-control unicase-form-control">
                                                     <option selected>--Select Color--</option>
                                                     @foreach(explode(',', $product->product_color) as $color)
                                                     <option value="{{ trim($color) }}">{{ trim($color) }}</option>
@@ -207,7 +208,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label class="info-title control-label">Size <span>*</span></label>
-                                                <select class="form-control unicase-form-control">
+                                                <select id="size" class="form-control unicase-form-control">
                                                     <option selected>--Select Size--</option>
                                                     @foreach(explode(',', $product->product_size) as $size)
                                                     <option value="{{ trim($size) }}">{{ trim($size) }}</option>
